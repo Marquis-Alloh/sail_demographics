@@ -1,0 +1,9 @@
+# R project files and user-specific files
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+.Renviron
+
+# Dev/test SQLite databases
+tests/testdata/*.sqlite
