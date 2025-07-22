@@ -68,11 +68,42 @@ load_db_table <- function(con, schema, table) {
   env <- Sys.getenv("APP_ENV", unset = "dev")
   
   if (env == "prod") {
-    return(dplyr::tbl(con, dbplyr::in_schema(schema, table)))
+    return(tbl_explicit(con, schema, table))
   } else {
     dev_table <- paste0(schema, "__", table)
     return(dplyr::tbl(con, dev_table))
   }
+}
+
+
+#' Create a lazy table with explicit column selection
+#'
+#' Avoids problematic `SELECT schema.*` queries by expanding all columns
+#' explicitly in the SQL. Useful when working with databases or dialects
+#' that do not support qualified wildcard selectors (e.g., `"SCHEMA".*`).
+#'
+#' @param con A `DBIConnection` object.
+#' @param schema A string specifying the schema name.
+#' @param table A string specifying the table name.
+#'
+#' @return A `tbl_dbi` lazy query object with explicit column selection.
+#' @export
+tbl_explicit <- function(con, schema, table) {
+  full_table <- dbplyr::in_schema(schema, table)
+  cols <- DBI::dbListFields(con, DBI::Id(schema = schema, table = table))
+  
+  quoted_cols <- DBI::dbQuoteIdentifier(con, cols)
+  quoted_table <- DBI::dbQuoteIdentifier(con, DBI::Id(schema = schema, table = table))
+  
+  sql_query <- dbplyr::build_sql(
+    "SELECT ",
+    dbplyr::sql(paste(quoted_cols, collapse = ", ")),
+    " FROM ",
+    quoted_table,
+    con = con
+  )
+  
+  dplyr::tbl(con, dbplyr::sql(sql_query))
 }
 
 
