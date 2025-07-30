@@ -4,12 +4,13 @@ library(dplyr)
 library(readxl)
 library(here)
 
+setwd("C:\Users\MarquisAlloh\Documents\code\task_2\Read_v2\Project")
 glue('we are now here: {getwd()}')
 
 #file path
-ctv3_to_readv2_map <- read_tsv("~/code/project/codelists/raw/ctv3rctmap_uk_20200401000002.txt")
-ethnicity_ctv3_codes  <- read_csv("~/code/project/codelists/raw/opensafely-ethnicity-2020-04-27.csv")
-readv2_lookup  <- read_excel("~/code/project/codelists/raw/read code V2 - codes and descriptions.xlsx")
+ctv3_to_readv2_map <- read_tsv(here("codelists","raw","ctv3rctmap_uk_20200401000002.txt"))
+ethnicity_ctv3_codes  <- read_csv(here("codelists","raw","opensafely-ethnicity-2020-04-27.csv"))
+readv2_lookup  <- read_excel(here("codelists","raw","read code V2 - codes and descriptions.xlsx"))
 
 #setting up our tables for the join
 ethnicity_ctv3_codes  <- ethnicity_ctv3_codes  |>
@@ -44,4 +45,4 @@ ethnicity_read_v2 <- Grimy_df |>
   drop_na(c(v2_conceptid,v2_termid,ctv3_conceptid,ctv3_termid)) # went from 267 obs to 253 obs
 
 
-save(ethnicity_read_v2, file="~/codelists")
+write.csv(ethnicity_read_v2, here("codelists","raw","ethnicity_readv2.csv"))
