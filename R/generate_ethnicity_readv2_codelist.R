@@ -2,12 +2,12 @@ library(tidyverse)
 library(here)
 library(janitor)
 
-#file path
+# Load mapping files, codelist and Read v2 look-up
 ctv3_to_readv2_map <- read_csv(here("codelists","raw","ctv3rctmap_uk_20200401000002.csv.xz"))
 ethnicity_ctv3_codes  <- read_csv(here("codelists","raw","opensafely-ethnicity-2020-04-27.csv"))
 readv2_lookup  <- read_csv(here("codelists","raw","readv2_codes_descriptions.csv.xz"))
 
-# # Standardise column names to snake_case and rename key columns for clarity
+# Standardise column names to snake_case and rename key columns for clarity
 ethnicity_ctv3_codes <- ethnicity_ctv3_codes |>
   clean_names() |>
   rename(
@@ -62,5 +62,5 @@ ethnicity_read_v2 <- ethnicity_read_v2 |>
     ethnicity_16,
   )
 
-
+# Save final codelist to file
 write.csv(ethnicity_read_v2, here("codelists","ethnicity_readv2.csv"))
