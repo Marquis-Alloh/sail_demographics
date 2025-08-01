@@ -1,11 +1,6 @@
-library(glue)
 library(tidyverse)
-library(dplyr)
-library(readxl)
 library(here)
 library(janitor)
-
-glue('we are now here: {getwd()}')
 
 #file path
 ctv3_to_readv2_map <- read_csv(here("codelists","raw","ctv3rctmap_uk_20200401000002.csv.xz"))
@@ -14,7 +9,7 @@ readv2_lookup  <- read_csv(here("codelists","raw","readv2_codes_descriptions.csv
 
 # # Standardise column names to snake_case and rename key columns for clarity
 ethnicity_ctv3_codes <- ethnicity_ctv3_codes |>
-  janitor::clean_names() |>
+  clean_names() |>
   rename(
     ctv3_conceptid = code,
     ctv3_description = description,
@@ -23,10 +18,10 @@ ethnicity_ctv3_codes <- ethnicity_ctv3_codes |>
   )
 
 ctv3_to_readv2_map <- ctv3_to_readv2_map |>
-  janitor::clean_names()
+  clean_names()
 
 readv2_lookup <- readv2_lookup |> 
-  janitor::clean_names() |>
+  clean_names() |>
   rename(
     v2_conceptid = read_code,
     v2_termid = term_code,
