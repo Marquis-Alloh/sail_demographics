@@ -63,4 +63,4 @@ ethnicity_read_v2 <- ethnicity_read_v2 |>
   )
 
 # Save final codelist to file
-write.csv(ethnicity_read_v2, here("codelists","ethnicity_readv2.csv"))
+write_csv(ethnicity_read_v2, here("codelists","ethnicity_readv2.csv"))
