@@ -33,9 +33,9 @@ tbl_pedw_superspell <- glue("{cohort_prefix}_PEDW_SUPERSPELL")
 # -----------------------------------------------------------------------------
 # Outpatient Data-set for Wales (OPDW)
 # -----------------------------------------------------------------------------
-tbl_opdw       <- glue("{cohort_prefix}_OPDW_OPDW_OUTPATIENTS")
-tbl_opdw_diag  <- glue("{cohort_prefix}_OPDW_OPDW_OUTPATIENTS_DIAG")
-tbl_opdw_oper  <- glue("{cohort_prefix}_OPDW_OPDW_OUTPATIENTS_OPER")
+tbl_opdw       <- glue("{cohort_prefix}_OPDW_OUTPATIENTS")
+tbl_opdw_diag  <- glue("{cohort_prefix}_OPDW_OUTPATIENTS_DIAG")
+tbl_opdw_oper  <- glue("{cohort_prefix}_OPDW_OUTPATIENTS_OPER")
 
 # -----------------------------------------------------------------------------
 # Emergency Department Data-set (EDDS)
