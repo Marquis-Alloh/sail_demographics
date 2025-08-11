@@ -156,3 +156,66 @@ save_db_table <- function(con, schema, table, data, overwrite = FALSE, append = 
   
   invisible(NULL)
 }
+
+
+#' Materialize a dbplyr query to a database table (DB2- and SQLite-compatible)
+#'
+#' Uses APP_ENV to decide how and where to write the table:
+#' - In 'prod' (DB2): creates schema-qualified table via SQL with WITH DATA
+#' - In 'dev' (SQLite): uses dbplyr::compute() to create local table
+#'
+#' @param query A dbplyr query (lazy tbl object)
+#' @param schema Schema name
+#' @param table Table name
+#' @param con A DBI connection
+#' @param overwrite Should existing table be overwritten? Default: FALSE
+#' @return A `dplyr::tbl` pointing to the new table
+#' @export
+compute_to_db <- function(query, con, schema, table, overwrite = FALSE) {
+  env <- Sys.getenv("APP_ENV", unset = "dev")
+  
+  if (env == "prod") {
+    full_table <- DBI::Id(schema = schema, table = table)
+    
+    if (DBI::dbExistsTable(con, full_table)) {
+      if (overwrite) {
+        DBI::dbRemoveTable(con, full_table)
+      } else {
+        stop(glue::glue("Table {schema}.{table} already exists. Use overwrite = TRUE to replace it."))
+      }
+    }
+    
+    sql_query <- dbplyr::sql_render(query)
+    sql_string <- as.character(sql_query)
+    
+    full_sql <- glue::glue(
+      'CREATE TABLE "{schema}"."{table}" AS ({sql_string}) WITH DATA'
+    )
+    
+    DBI::dbExecute(con, full_sql)
+    
+    # Return lazy query of new table, like dplyr::compute()
+    return(load_db_table(con, schema, table))
+    
+  } else {
+    # dev: use compute() with flattened table name
+    table_name <- paste0(schema, "__", table)
+    
+    # Remove if exists
+    if (DBI::dbExistsTable(con, table_name)) {
+      if (overwrite) {
+        DBI::dbRemoveTable(con, table_name)
+      } else {
+        stop(glue::glue("Table {table_name} already exists. Use overwrite = TRUE to replace it."))
+      }
+    }
+    
+    # compute creates and returns a tbl
+    result <- dplyr::compute(query, name = table_name, temporary = FALSE)
+    return(result)
+  }
+}
+
+
+
+
