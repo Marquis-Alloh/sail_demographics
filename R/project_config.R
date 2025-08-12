@@ -40,7 +40,7 @@ tbl_opdw_oper  <- glue("{cohort_prefix}_OPDW_OUTPATIENTS_OPER")
 # -----------------------------------------------------------------------------
 # Emergency Department Data-set (EDDS)
 # -----------------------------------------------------------------------------
-tbl_edds <- glue("{cohort_prefix}_EDDS_EDDS")
+tbl_edds <- glue("{cohort_prefix}_EDDS")
 
 # -----------------------------------------------------------------------------
 # Welsh Longitudinal General Practice (WLGP)
