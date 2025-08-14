@@ -72,7 +72,7 @@ PEDW_SPELL <- tribble(
 # -----------------------------------------------------------------------------
 # Save CSV files
 # -----------------------------------------------------------------------------
-write_csv(WLGP,       here("tests", "testdata", "WLGP.csv"))
-write_csv(EDDS,       here("tests", "testdata", "EDDS.csv"))
-write_csv(OPDW,       here("tests", "testdata", "OPDW.csv"))
+write_csv(WLGP,       here("tests", "testdata", "WLGP_GP_EVENT_CLEANSED.csv"))
+write_csv(EDDS,       here("tests", "testdata", "EDDS_EDDS.csv"))
+write_csv(OPDW,       here("tests", "testdata", "OPDW_OUTPATIENTS.csv"))
 write_csv(PEDW_SPELL, here("tests", "testdata", "PEDW_SPELL.csv"))
