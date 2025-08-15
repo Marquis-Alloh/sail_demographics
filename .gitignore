@@ -6,4 +6,4 @@
 .Renviron
 
 # Dev/test SQLite databases
-tests/testdata/*.sqlite
+tests/testdata/*
