@@ -34,29 +34,45 @@ WLGP_DOB <- load_db_table(con, schema_data, tbl_wlgp_event)
 EDDS_DOB <- load_db_table(con, schema_data, tbl_edds)
 OPDW_DOB <- load_db_table(con, schema_data, tbl_opdw)
 
-
 #cleaning the data
-cleaning(WLGP_DOB,na_option = 'fill', column_type = "Date",column_name = "WOB" , trim = TRUE)
+wlgp_query <- cleaning(WLGP_DOB, na_option = 'fill', column_type = "Date",column_name = "WOB" , trim = TRUE)
 
-cleaning(EDDS_DOB, column_type = "Date", trim = TRUE, column_name = "ADMIN_ARR_DT",na_option = "fill")
-cleaning(EDDS_DOB, column_type = "NUM", trim = TRUE, column_name = "AGE", na_option = "fill")
+edds_query_1 <- cleaning(EDDS_DOB, column_type = "Date", trim = TRUE, column_name = "ADMIN_ARR_DT",na_option = "fill")
+edds_query_2 <- cleaning(EDDS_DOB, column_type = "NUM", trim = TRUE, column_name = "AGE", na_option = "fill")
 
-cleaning(OPDW_DOB, na_option = "fill", column_type = "NUM", trim = TRUE, column_name = "AGE_AT_APPT")
-cleaning(OPDW_DOB, na_option = "fill", column_type = "Date", trim = TRUE, column_name = "ATTEND_DT")
+opdw_query_1 <- cleaning(OPDW_DOB, na_option = "fill", column_type = "NUM", trim = TRUE, column_name = "AGE_AT_APPT")
+opdw_query_2 <- cleaning(OPDW_DOB, na_option = "fill", column_type = "Date", trim = TRUE, column_name = "ATTEND_DT")
 
-compute_to_db(con, )
+compute_to_db(wlgp_query, con, schema_collab, tbl_wlgp_event, overwrite=TRUE)
 
-WLGP_DOB <- WLGP_DOB|>
-  select(WOB) |>
+compute_to_db(edds_query_1, con, schema_collab, tbl_edds, overwrite=TRUE)
+
+compute_to_db(edds_query_2, con, schema_collab, tbl_edds,overwrite=TRUE)
+
+compute_to_db(opdw_query_1, con, schema_collab, tbl_opdw,overwrite=TRUE)
+
+compute_to_db(opdw_query_2, con, schema_collab, tbl_opdw,overwrite=TRUE)
+
+#combinding the tables
+wlgp_h <- WLGP_DOB|>
+  select(WOB, ALF_E) |>
+  rename(DOB = WOB) |>
+  mutate(source = "tbl_wlgp_event") |>
   head(20)
-  
-EDDS_DOB <- EDDS_DOB |>
-  select(ADMIN_ARR_DT, AGE) |>
-  #creating the date of birth
-  mutate(DOB = make_date(ADMIN_ARR_DT, AGE)) |>
+
+edds_h <- EDDS_DOB |>
+  select(ALF_E, DOB) |>
+  mutate(source = "tbl_edds") |>
   head(20)
 
-OPDW_DOB <- OPDW_DOB |>
-  select(ATTEND_DT, AGE_AT_APPT) |>
-  mutate(DOB = make_date(ATTEND_DT, AGE_AT_APPT)) |>
+opdw_h <- OPDW_DOB |>
+  select(ALF_E, DOB) |>
+  mutate(source = "tbl_opdw") |>
   head(20)
+
+combine_dob <- bind_rows(wlgp_h, opdw_h) |>
+  show_query()
+
+compute_to_db(bind_rows(wlgp_h,edds_h,opdw_h), con, schema_collab, tbl_wlgp_event, overwrite=TRUE)
+
+
