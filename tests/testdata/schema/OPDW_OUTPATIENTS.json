@@ -1,0 +1,8 @@
+{
+  "ALF_E": "bigint",
+  "GNDR_CD": "character",
+  "ATTEND_DT": "date",
+  "AGE_AT_APPT": "numeric",
+  "LSOA_11_CD": "character",
+  "LSOA_01_CD": "character"
+}

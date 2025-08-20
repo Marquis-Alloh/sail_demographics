@@ -1,0 +1,9 @@
+{
+  "ALF_E": "bigint",
+  "LSOA_CD": "character",
+  "LSOA2011_CD": "character",
+  "LSOA2001_CD": "character",
+  "GNDR_CD": "numeric",
+  "AVAIL_FROM_DT": "date",
+  "ADMIS_DT": "date"
+}

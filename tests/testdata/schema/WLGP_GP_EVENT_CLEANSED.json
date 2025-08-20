@@ -1,0 +1,12 @@
+{
+  "ALF_E": "bigint",
+  "EVENT_CD": "character",
+  "EVENT_CD_VRS": "character",
+  "EVENT_VAL": "numeric",
+  "EVENT_DT": "date",
+  "PRAC_CD_E": "numeric",
+  "LSOA_CD": "character",
+  "WOB": "date",
+  "GNDR_CD": "character",
+  "FROM_DT": "date"
+}

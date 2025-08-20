@@ -1,0 +1,8 @@
+{
+  "ALF_E": "bigint",
+  "SEX": "integer",
+  "LSOA2011_CD": "character",
+  "ADMIN_ARR_DT": "date",
+  "ETHNIC_GROUP": "character",
+  "AGE": "numeric"
+}
