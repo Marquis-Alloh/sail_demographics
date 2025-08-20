@@ -37,8 +37,10 @@ connect_to_db <- function() {
     )
   } else {
     con <- DBI::dbConnect(
-      RSQLite::SQLite(),
-      here::here("tests", "testdata", "tests_pr_sail.sqlite")
+      duckdb::duckdb(
+        dbdir = here::here("tests", "testdata", "tests_pr_sail.duckdb"),
+        bigint = "integer64"
+      )
     )
   }
   

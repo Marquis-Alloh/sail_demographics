@@ -5,5 +5,5 @@
 .Ruserdata
 .Renviron
 
-# Dev/test SQLite databases
-tests/testdata/*
+# test databases
+*.duckdb
